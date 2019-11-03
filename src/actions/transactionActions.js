@@ -4,7 +4,7 @@ import { GET_ERRORS, GET_TRANSACTIONS, GET_TRANSACTION } from "./types";
 export const createTransaction = (transaction, history) => async dispatch => {
   try {
     //const res =
-    await axios.post("/api/project", project);
+    await axios.post("/api/transaction", transaction);
     history.push("/dashboard");
     dispatch({
       type: GET_ERRORS,
@@ -19,8 +19,8 @@ export const createTransaction = (transaction, history) => async dispatch => {
   }
 };
 
-export const getProjects = () => async dispatch => {
-  const res = await axios("/api/project/all");
+export const getTransactions = () => async dispatch => {
+  const res = await axios("/api/transaction/all");
   //history.push("/dashboard");
   dispatch({
     type: GET_TRANSACTIONS,
@@ -28,9 +28,9 @@ export const getProjects = () => async dispatch => {
   });
 };
 
-export const getProject = (id, history) => async dispatch => {
+export const getTransaction = (id, history) => async dispatch => {
   try {
-    const res = await axios.get(`/api/project/${id}`);
+    const res = await axios.get(`/api/transaction/${id}`);
     dispatch({
       type: GET_TRANSACTION,
       payload: res.data

@@ -106,7 +106,6 @@ class ViewTransaction extends Component {
                       onChange={this.onChange}
                       disabled
                     />
-
                   </div>
                   <div className="form-group">
                     <textarea
@@ -136,7 +135,7 @@ class ViewTransaction extends Component {
             </div>
           </div>
         </div>
-     
+      </div>
     );
   }
 }
