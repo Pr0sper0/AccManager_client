@@ -6,20 +6,20 @@ import {
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import { Link } from "react-router-dom";
 
 class ViewTransaction extends Component {
   constructor() {
     super();
     this.state = {
       id: "",
-      transactionName: "",
       transactionIdentifier: "",
-      description: "",
-      start_date: "",
-      end_date: "",
+      type: "",
+      amount: "",
+      effectiveDate: "",
       errors: {}
     };
-    this.onChange = this.onChange.bind(this);
+
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -29,19 +29,17 @@ class ViewTransaction extends Component {
     }
     const {
       id,
-      transactionName,
       transactionIdentifier,
-      description,
-      start_date,
-      end_date
+      type,
+      amount,
+      effectiveDate
     } = nextProps.transaction;
     this.setState({
       id,
-      transactionName,
       transactionIdentifier,
-      description,
-      start_date,
-      end_date
+      type,
+      amount,
+      effectiveDate
     });
   }
 
@@ -50,27 +48,13 @@ class ViewTransaction extends Component {
     this.props.getTransaction(id, this.props.history);
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
   onSubmit(e) {
     e.preventDefault();
-    const updateTransaction = {
-      id: this.state.id,
-      transactionName: this.state.transactionName,
-      transactionIdentifier: this.state.transactionIdentifier,
-      description: this.state.description,
-      start_date: this.state.start_date,
-      end_date: this.state.end_date
-    };
-
-    this.props.createTransaction(updateTransaction, this.props.history);
-    console.log(updateTransaction);
   }
 
   render() {
     const { errors } = this.state;
+    const type = this.state.type;
     return (
       <div className="transaction">
         <div className="transaction">
@@ -82,7 +66,7 @@ class ViewTransaction extends Component {
                 </h5>
                 <hr />
                 <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
+                  <div className="form-group bg-primary">
                     <input
                       type="text"
                       className={classnames("form-control form-control-lg ", {
@@ -91,45 +75,46 @@ class ViewTransaction extends Component {
                       placeholder="Unique Transaction ID"
                       name="transactionIdentifier"
                       value={this.state.transactionIdentifier}
-                      onChange={this.onChange}
                       disabled
                     />
                   </div>
+                  <h6>Transaction type</h6>
                   <div className="form-group">
-                    <textarea
-                      className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.description
-                      })}
-                      placeholder="Transaction type"
+                    <span
+                      className={
+                        "card card-body " +
+                        (type === "Debit" ? "bg-primary" : "bg-warning") +
+                        " mb-3"
+                      }
+                    >
+                      {this.state.type}
+                    </span>
+                  </div>
+                  <h6>Transaction amount</h6>
+                  <div className="form-group">
+                    <span
+                      className="input-group-text bg-success"
+                      placeholder="Transaction amount"
                       name="type"
-                      value={this.state.type}
-                      onChange={this.onChange}
                       disabled
-                    />
+                    >
+                      {this.state.amount}
+                    </span>
                   </div>
+                  <h6>Transaction Date</h6>
                   <div className="form-group">
-                    <textarea
-                      className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.amount
-                      })}
-                      placeholder="Transaction type"
-                      name="type"
-                      value={this.state.amount}
-                      onChange={this.onChange}
-                      disabled
-                    />
-                  </div>
-                  <h6>Effective Date</h6>
-                  <div className="form-group">
-                    <input
+                    <span
+                      className="input-group-text bg-success"
                       type="date"
-                      className="form-control form-control-lg"
-                      name="effectivedate"
-                      value={this.state.effectivedate}
-                      onChange={this.onChange}
+                      name="effectiveDate"
                       disabled
-                    />
+                    >
+                      {this.state.effectiveDate}
+                    </span>
                   </div>
+                  <Link to="/Dashboard" className="btn btn-lg btn-info">
+                    Return to dashboard
+                  </Link>
                 </form>
               </div>
             </div>

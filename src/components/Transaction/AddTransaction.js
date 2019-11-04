@@ -7,24 +7,38 @@ import classnames from "classnames";
 export class AddTransaction extends Component {
   constructor() {
     super();
-
+    var today = new Date(),
+      date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
     this.state = {
       transactionIdentifier: "",
-      type: ["Debit", "Credit"],
+      type: "Debit",
       amount: null,
-      effectivedate: "",
+      currDate: date,
+      balance: "",
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.OnTypeChange = this.OnTypeChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+      console.log(nextProps.errors);
     }
   }
+
+  // componentDidMount() {
+  //   const { id } = this.props.match.params;
+  //   this.props.getTransaction(id, this.props.history);
+  // }
 
   onChange(e) {
     let { name, value } = e.target;
@@ -37,26 +51,23 @@ export class AddTransaction extends Component {
       transactionIdentifier: this.state.transactionIdentifier,
       type: this.state.type,
       amount: this.state.amount,
-      effectivedate: this.state.effectivedate
+      effectiveDate: this.state.effectiveDate
     };
     this.props.createTransaction(newTransaction, this.props.history);
-    console.log(newTransaction);
+    console.log(newTransaction.type.amount);
+  }
+
+  OnTypeChange(e) {
+    let { value } = e.target;
+    this.setState(() => ({
+      type: value
+    }));
   }
 
   render() {
     const { errors } = this.state;
     return (
       <div>
-        {
-          //check name attribute input fields
-          //create constructor
-          //set state
-          //set value on input fields
-          //create onChange function
-          //set onChange on each input field
-          //bind on constructor
-          //check state change in the react extension
-        }
         <div className="transaction">
           <div className="container">
             <div className="row">
@@ -67,61 +78,42 @@ export class AddTransaction extends Component {
                 <hr />
                 <form onSubmit={this.onSubmit}>
                   <div className="form-group">
+                    <select
+                      value={this.state.type}
+                      onChange={this.OnTypeChange}
+                    >
+                      <option value="Debit">Debit</option>
+                      <option value="Credit">Credit</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
                     <input
                       type="text"
-                      className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.transactionIdentifier
-                      })}
-                      placeholder="Unique Transaction ID"
-                      name="transactionIdentifier"
-                      value={this.state.transactionIdentifier}
+                      className={classnames(
+                        "form-control form-control-lg ",
+                        {
+                          "is-invalid": errors.transactionAmount
+                        },
+                        { "is-invalid": errors.amount }
+                      )}
+                      placeholder="Amount value"
+                      name="amount"
+                      value={this.state.transactionAmount}
                       onChange={this.onChange}
                     />
-
-                    {errors.transactionIdentifier && (
+                    {errors.transactionAmount && (
                       <div className="invalid-feedback">
-                        {errors.transactionIdentifier}
+                        {errors.transactionAmount}
                       </div>
                     )}
-                  </div>
-                  <div className="form-group">
-                    <textarea
-                      className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.description
-                      })}
-                      placeholder="Transaction type"
-                      name="type"
-                      value={this.state.type}
-                      onChange={this.onChange}
-                    />
-                    {errors.type && (
-                      <div className="invalid-feedback">{errors.type}</div>
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <textarea
-                      className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.amount
-                      })}
-                      placeholder="Transaction type"
-                      name="type"
-                      value={this.state.amount}
-                      onChange={this.onChange}
-                    />
                     {errors.amount && (
                       <div className="invalid-feedback">{errors.amount}</div>
                     )}
                   </div>
-                  <h6>Effective Date</h6>
-                  <div className="form-group">
-                    <input
-                      type="date"
-                      className="form-control form-control-lg"
-                      name="effectivedate"
-                      value={this.state.effectivedate}
-                      onChange={this.onChange}
-                    />
-                  </div>
+
+                  <h6>Current day</h6>
+                  <div className="form-group">{this.state.currDate}</div>
 
                   <input
                     type="submit"

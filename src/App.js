@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Layout/Header";
@@ -18,9 +17,10 @@ class App extends Component {
         <Router>
           <div className="App">
             <Header />
-            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/Dashboard" component={Dashboard} />
             <Route path="/addTransaction" component={AddTransaction} />
             <Route path="/ViewTransaction/:id" component={ViewTransaction} />
+            <Route exact path="/" component={Dashboard} />
           </div>
         </Router>
       </Provider>

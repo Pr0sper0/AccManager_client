@@ -20,6 +20,7 @@ class Dashboard extends Component {
               <h1 className="display-4 text-center">Transactions</h1>
               <br />
               <CreateTransactionButton />
+
               <br />
               <hr />
               {transactions.map(transaction => (
@@ -28,9 +29,6 @@ class Dashboard extends Component {
                   transaction={transaction}
                 />
               ))}
-              {/*
-                  <!-- Comments -->
-              */}
             </div>
           </div>
         </div>
